@@ -54,7 +54,8 @@ class TinyFacesDetector():
           List of dlib rectangles.
         """
 
-        raw_img = cv2.imread(filename)
+        #raw_img = cv2.imread(filename)
+        raw_img = filename
         raw_img = cv2.cvtColor(raw_img, cv2.COLOR_BGR2RGB)
         raw_img_f = raw_img.astype(np.float32)
 
