@@ -61,7 +61,7 @@ for video in glob.glob(VideoDirectoryPath+"/*.webm"):
             #overlay_bounding_boxes(image_path,rect,0.1)
             aligner_tight.out_dir= faces_out_folder
             aligner_tight.align_face(img1,dlib.rectangle(rect[0],rect[1],rect[2],rect[3]),str(face_indx)+'.jpg')
-        cap.release()
-        cap1.release()
+    cap.release()
+    cap1.release()
 
 
