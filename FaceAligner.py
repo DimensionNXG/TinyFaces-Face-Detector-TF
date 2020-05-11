@@ -10,7 +10,8 @@ class FaceAligner():
         self.out_dir=out_dir
 
     def align_face(self,img_path,face_rec,out_file_name):
-        bgr_img = cv2.imread(img_path)
+        #bgr_img = cv2.imread(img_path)
+        bgr_img = (img_path)
         # Convert to RGB since dlib uses RGB images
         img = cv2.cvtColor(bgr_img, cv2.COLOR_BGR2RGB)
         landmarks=self.predictor_5_face_landmarks(img, face_rec)
