@@ -42,25 +42,28 @@ for video in glob.glob(VideoDirectoryPath+"/*.webm"):
     #ret, img = cap.read()
     while (cap.isOpened()):
         ret, frame= cap.read()
-        #next line is just for align face function.
-        ret1,img1 = cap1.read()
-        face_rects=tiny_faces_detector.detect(frame,nms_thresh=0.1,prob_thresh=0.5,min_conf=0.9)
-        overlay_bounding_boxes (frame, face_rects, 1)
-        if ret == True :
-            # Display the resulting frame
-            cv2.imshow ('Frame', frame)
-            # Press Q on keyboard to  exit
-            if cv2.waitKey (25) & 0xFF == ord ('q') :
-                break
-        #overlay_bounding_boxes (img, face_rects , 1)
-        #print(np.shape(img))
-        #cv2.imshow("Frame",img)
-        #print(face_rects)
-        face_indx+=1
-        for rect in face_rects:
-            #overlay_bounding_boxes(image_path,rect,0.1)
-            aligner_tight.out_dir= faces_out_folder
-            aligner_tight.align_face(img1,dlib.rectangle(rect[0],rect[1],rect[2],rect[3]),str(face_indx)+'.jpg')
+        try:
+            #next line is just for align face function.
+            ret1,img1 = cap1.read()
+            face_rects=tiny_faces_detector.detect(frame,nms_thresh=0.1,prob_thresh=0.5,min_conf=0.9)
+            overlay_bounding_boxes (frame, face_rects, 1)
+            if ret == True :
+                # Display the resulting frame
+                cv2.imshow ('Frame', frame)
+                # Press Q on keyboard to  exit
+                if cv2.waitKey (25) & 0xFF == ord ('q') :
+                    break
+            #overlay_bounding_boxes (img, face_rects , 1)
+            #print(np.shape(img))
+            #cv2.imshow("Frame",img)
+            #print(face_rects)
+            face_indx+=1
+            for rect in face_rects:
+                #overlay_bounding_boxes(image_path,rect,0.1)
+                aligner_tight.out_dir= faces_out_folder
+                aligner_tight.align_face(img1,dlib.rectangle(rect[0],rect[1],rect[2],rect[3]),str(face_indx)+'.jpg')
+        except:
+            break
     cap.release()
     cap1.release()
 
