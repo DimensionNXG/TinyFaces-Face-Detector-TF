@@ -20,7 +20,7 @@ class Model():
       self.dtype = tf.float32
       self.weight_file_path = weight_file_path
       with open(self.weight_file_path, "rb") as f:
-        self.mat_blocks_dict, self.mat_params_dict = pickle.load(f)
+        self.mat_blocks_dict, self.mat_params_dict = pickle.load(f, encoding='latin1')
 
     def get_data_by_key(self, key):
       """Helper to access a pretrained model data through a key."""
