@@ -29,3 +29,5 @@ Requirements:
 - dlib
 - Tensorflow
 
+
+Link to the .pkl model file: https://drive.google.com/open?id=1qwScdaRGGxa0NXepKC0Mz0uQoC-6T18V
