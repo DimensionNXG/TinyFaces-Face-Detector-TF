@@ -6,11 +6,14 @@ import glob
 import numpy as np
 import cv2
 import util
+import cvlib as cv
 faces_out_folder = "./output/"
 VideoDirectoryPath="InputVideos/"
 model_pkl="weights.pkl"
 Utils.mkdir_if_not_exist(faces_out_folder)
 tiny_faces_detector = TinyFacesDetector(model_pkl,use_gpu=True)
+font_style = cv2.FONT_HERSHEY_DUPLEX
+font_size = 0.4
 
 #function to overlay bounding boxes
 def overlay_bounding_boxes(raw_img, refined_bboxes, lw):
@@ -27,6 +30,16 @@ def overlay_bounding_boxes(raw_img, refined_bboxes, lw):
       _lw = int(np.ceil(_lw * _score))
     _r = [int(x) for x in r[:4]]
     cv2.rectangle(raw_img, (_r[0], _r[1]), (_r[2], _r[3]), rect_color, _lw)
+    #cropping face using bounding box
+    face = raw_img[r[1]:r[3], r[0]:r[2]]
+    label, confidence = cv.detect_gender (face)
+    if confidence[0]> confidence[1]:
+        gender= "Male"
+    else:
+        gender= "Female"
+    print(str(np.shape(face)) +"="+ str(label))
+    cv2.putText (raw_img, str(gender),
+                 (_r[0], _r[1]), font_style, font_size, (255, 255, 255), 1)
 
 
 #init the face landmarks detector
@@ -47,6 +60,7 @@ for video in glob.glob(VideoDirectoryPath+"/*.webm"):
             ret1,img1 = cap1.read()
             face_rects=tiny_faces_detector.detect(frame,nms_thresh=0.1,prob_thresh=0.5,min_conf=0.9)
             overlay_bounding_boxes (frame, face_rects, 1)
+
             if ret == True :
                 # Display the resulting frame
                 cv2.imshow ('Frame', frame)
