@@ -25,7 +25,7 @@ class TinyFacesDetector():
         self.model = Model(self.model_file)
         # Load an average image and clusters(reference boxes of templates).
         with open(self.model_file, "rb") as f:
-            _, mat_params_dict = pickle.load(f)
+            _, mat_params_dict = pickle.load(f,encoding='latin1')
         self.MAX_INPUT_DIM = 5000.0
         self.average_image = self.model.get_data_by_key("average_image")
         clusters = self.model.get_data_by_key("clusters")
