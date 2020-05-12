@@ -8,7 +8,7 @@
 Link to the .pkl model (Tiny faces model) file: https://drive.google.com/open?id=1qwScdaRGGxa0NXepKC0Mz0uQoC-6T18V
 After downloading the weights file from above and placing it in the root directory of the project
 
-# Command to execute real time demo on Videos.
+### Command to execute real time demo on Videos.
 If you want to run on CPU
 
 ```$ CUDA_VISIBLE_DEVICES="" python demo.py```
