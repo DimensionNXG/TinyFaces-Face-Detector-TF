@@ -6,7 +6,11 @@ import glob
 import numpy as np
 import cv2
 import util
-import cvlib as cv
+from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing.image import img_to_array
+from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
+
+
 faces_out_folder = "./output/"
 VideoDirectoryPath="InputVideos/"
 model_pkl="weights.pkl"
@@ -14,6 +18,8 @@ Utils.mkdir_if_not_exist(faces_out_folder)
 tiny_faces_detector = TinyFacesDetector(model_pkl,use_gpu=True)
 font_style = cv2.FONT_HERSHEY_DUPLEX
 font_size = 0.4
+#loading mask net model
+maskNet = load_model('mask_detector.model')
 
 #function to overlay bounding boxes
 def overlay_bounding_boxes(raw_img, refined_bboxes, lw):
@@ -32,16 +38,42 @@ def overlay_bounding_boxes(raw_img, refined_bboxes, lw):
     cv2.rectangle(raw_img, (_r[0], _r[1]), (_r[2], _r[3]), rect_color, _lw)
     #cropping face using bounding box
     face = raw_img[r[1]:r[3], r[0]:r[2]]
-    label, confidence = cv.detect_gender (face)
-    if confidence[0]> confidence[1]:
-        gender= "Male"
+    #For MaskNet inferencing
+    face = cv2.cvtColor (face, cv2.COLOR_BGR2RGB)
+    face = cv2.resize (face, (224, 224))
+    face = img_to_array(face)
+    face = preprocess_input (face)
+    face = np.expand_dims (face, axis=0)
+    preds = maskNet.predict (face)
+    if preds[0][0] > preds[0][1]:
+        Label= "Mask"
     else:
-        gender= "Female"
-    print(str(np.shape(face)) +"="+ str(label))
-    cv2.putText (raw_img, str(gender),
+        Label= "NonMask"
+    print(Label)
+    cv2.putText (raw_img, str (Label),
                  (_r[0], _r[1]), font_style, font_size, (255, 255, 255), 1)
 
+    #print((preds)[0][1])
 
+    #resizing with border:
+    """desired_size = 112
+    old_size = face.shape[:2]  # old_size is in (height, width) format
+    ratio = float (desired_size) / max (old_size)
+    new_size = tuple ([int (x * ratio) for x in old_size])
+
+    # new_size should be in (width, height) format
+
+    im = cv2.resize (im, (new_size[1], new_size[0]))
+
+    delta_w = desired_size - new_size[1]
+    delta_h = desired_size - new_size[0]
+    top, bottom = delta_h // 2, delta_h - (delta_h // 2)
+    left, right = delta_w // 2, delta_w - (delta_w // 2)
+
+    color = [0, 0, 0]
+    new_im = cv2.copyMakeBorder (im, top, bottom, left, right, cv2.BORDER_CONSTANT,
+                                 value=color)
+    print(np.shape(new_im))"""
 #init the face landmarks detector
 predictor_5_face_landmarks = dlib.shape_predictor("shape_predictor_5_face_landmarks.dat")
 
@@ -80,5 +112,4 @@ for video in glob.glob(VideoDirectoryPath+"/*.webm"):
             break
     cap.release()
     cap1.release()
-
 
