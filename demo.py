@@ -12,7 +12,7 @@ from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 
 
 faces_out_folder = "./output/"
-VideoDirectoryPath="InputVideos1/"
+VideoDirectoryPath="InputVideos/"
 model_pkl="weights.pkl"
 Utils.mkdir_if_not_exist(faces_out_folder)
 tiny_faces_detector = TinyFacesDetector(model_pkl,use_gpu=True)
