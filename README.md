@@ -1,33 +1,19 @@
-# Tiny Face Detector class in TensorFlow
- This code is a trial to revamp the code [Tiny_Faces_in_Tensorflow](https://github.com/cydonia999/Tiny_Faces_in_Tensorflow) which is a TensorFlow port(inference only) of Tiny Face Detector from [authors' MatConvNet codes](https://github.com/peiyunh/tiny).
- 
- + dlib face aligner is added
+# Tiny Face Detector class in TensorFlow (For PR)
+## Requirements:
+Dlib: 19.19.0
+Opencv version: 4.1.0
+Tensorflow version:: 2.1.0
+Python 3.6.10
 
+Link to the .pkl model (Tiny faces model) file: https://drive.google.com/open?id=1qwScdaRGGxa0NXepKC0Mz0uQoC-6T18V
+After downloading the weights file from above and placing it in the root directory of the project
 
-## Converting a pretrained model
-You can download the converted model from here 
-[Tinyface Model](https://drive.google.com/open?id=1m8dcxNdFAH75Q5BSvyVXeVlerSS0y0LE)
+# Command to run
+If you want to run on CPU
 
-Or you can flow this to convert the model:
+```$ CUDA_VISIBLE_DEVICES="" python demo.py```
 
-`matconvnet_hr101_to_pickle` reads weights of the MatConvNet pretrained model and
-write back to a pickle file which is used in a TensorFlow model as initial weights.
+If you want to run on GPU
 
-1. Download a [ResNet101-based pretrained model(hr_res101.mat)](https://www.cs.cmu.edu/%7Epeiyunh/tiny/hr_res101.mat)
-from the authors' repo.
+```$ python demo.py```
 
-2. Convert the model to a pickle file by:
-```
-python matconvnet_hr101_to_pickle.py
-        --matlab_model_path /path/to/pretrained_model
-        --weight_file_path  /path/to/pickle_file
-```
-
-
-Requirements:
-- opencv-python
-- dlib
-- Tensorflow
-
-
-Link to the .pkl model file: https://drive.google.com/open?id=1qwScdaRGGxa0NXepKC0Mz0uQoC-6T18V
