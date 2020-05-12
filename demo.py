@@ -24,7 +24,7 @@ import cv2
 from random import *
 
 ## transparency value
-alpha = 0.6
+alpha = 0.7
 txt_box_height = 40
 txt_box_width = 70
 xoffset = 2
@@ -74,9 +74,9 @@ def overlay_bb(image, bboxes):
 
         # Set color of overlays
         if(temp > 99.5 or Label=="No Mask"):
-            rectangle_color = (50, 30, 255) #red
+            rectangle_color = (30, 30, 255) #red
         else:
-            rectangle_color = (0, 77, 0) #green
+            rectangle_color = (30, 150, 30) #green
 
         #Make face rectangle overlay
         cv2.rectangle(overlay, face_start_pt, face_end_pt,
