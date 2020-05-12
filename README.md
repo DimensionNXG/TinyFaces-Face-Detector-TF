@@ -1,4 +1,4 @@
-# Tiny Face Detector class in TensorFlow (For PR)
+# Mask-Non Mask Detection with Temperature (For PR)
 ## Requirements:
 ```Dlib: 19.19.0```
 ```Opencv version: 4.1.0```
