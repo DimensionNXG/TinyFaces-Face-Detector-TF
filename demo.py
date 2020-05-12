@@ -25,8 +25,8 @@ from random import *
 
 ## transparency value
 alpha = 0.7
-txt_box_height = 40
-txt_box_width = 70
+txt_box_height = 36
+txt_box_width = 60
 xoffset = 2
 yoffset = 15
 font_style = cv2.FONT_HERSHEY_DUPLEX
