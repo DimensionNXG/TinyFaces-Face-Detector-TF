@@ -66,16 +66,18 @@ def overlay_bb(image, bboxes) :
         face = preprocess_input (face)
         face = np.expand_dims (face, axis=0)
         preds = maskNet.predict (face)
-        if preds[0][0] > preds[0][1] :
+        if preds[0][0] > 0.7 :
             Label = "Mask"
-        else :
+        elif  preds[0][1] > 0.7:
             Label = "No Mask"
 
         # Set color of overlays
         if (temp > 99.5 or Label == "No Mask") :
             rectangle_color = (30, 30, 255)  # red
-        else :
+        elif (temp < 99.5 or Label == "Mask") :
             rectangle_color = (30, 150, 30)  # green
+        else :
+            rectangle_color = (0, 0, 0)  # green
 
         # Make face rectangle overlay
         cv2.rectangle (overlay, face_start_pt, face_end_pt,
