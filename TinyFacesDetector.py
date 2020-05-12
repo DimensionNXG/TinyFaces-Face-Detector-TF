@@ -8,13 +8,13 @@ from tiny_face_model import Model
 import numpy as np
 import cv2
 import pickle
-
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 import pylab as pl
 import time
 
 from scipy.special import expit
 import dlib
-
 
 class TinyFacesDetector():
     def __init__(self,model_file,use_gpu=True):
@@ -64,8 +64,8 @@ class TinyFacesDetector():
             min_scale = min(np.floor(np.log2(np.max(self.clusters_w[self.normal_idx] / raw_w))),
                             np.floor(np.log2(np.max(self.clusters_h[self.normal_idx] / raw_h))))
             max_scale = min(1.0, -np.log2(max(raw_h, raw_w) / self.MAX_INPUT_DIM))
-            scales_down = pl.frange(min_scale, 0, 1.)
-            scales_up = pl.frange(0.5, max_scale, 0.5)
+            scales_down = np.arange(min_scale, 0, 1.)
+            scales_up = np.arange(0.5, max_scale, 0.5)
             scales_pow = np.hstack((scales_down, scales_up))
             scales = np.power(2.0, scales_pow)
             return scales
@@ -141,6 +141,7 @@ class TinyFacesDetector():
             _r = [int(x) for x in r[:4]]
             _score = expit(r[4])
             if _score > min_conf:
-                det = dlib.rectangle(int(_r[0]), int(_r[1]), int(_r[2]), int(_r[3]))
+                det = (int(_r[0]), int(_r[1]), int(_r[2]), int(_r[3]))
                 boxes.append(det)
+
         return boxes
